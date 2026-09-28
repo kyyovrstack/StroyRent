@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СтройРент — Аренда спецтехники и оборудования</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FFB703;
+            --primary-dark: #FB8500;
+            --dark: #023047;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --light-gray: #E9ECEF;
+            --danger: #D90429;
+            --success: #2A9D8F;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-btn {
+            background: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .cart-btn:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        .cart-badge {
+            background: var(--danger);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(2, 48, 71, 0.85), rgba(2, 48, 71, 0.85)), url('https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: #E0E0E0;
+        }
+
+        .search-bar {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 12px 15px;
+            font-size: 1rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-bar button {
+            background: var(--primary);
+            border: none;
+            padding: 0 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-bar button:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        /* Categories Filter */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--light-gray);
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--dark);
+            color: white;
+            border-color: var(--dark);
+        }
+
+        /* Catalog Grid */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(2, 48, 71, 0.85);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .card-specs {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .card-specs li {
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-specs span {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--light-gray);
+            padding-top: 1rem;
+        }
+
+        .price {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .price small {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--gray);
+            display: block;
+        }
+
+        .rent-btn {
+            background: var(--primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .rent-btn:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        /* Modal Cart */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 12px;
+            padding: 2rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.open .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .cart-item-info h4 {
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .cart-item-info p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cart-total {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: right;
+            color: var(--dark);
+        }
+
+        .checkout-form {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkout-form input {
+            padding: 10px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .checkout-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .checkout-btn:hover {
+            background: #21867a;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: var(--gray);
+            padding: 2rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .search-bar { flex-direction: column; background: transparent; box-shadow: none; padding: 0; }
+            .search-bar input, .search-bar button { width: 100%; padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo"><i class="fa-solid fa-truck-monster" style="color: var(--primary);"></i> СТРОЙ<span>РЕНТ</span></a>
+            <div class="nav-actions">
+                <button class="cart-btn" onclick="toggleModal(true)">
+                    <i class="fa-solid fa-file-invoice"></i> Заявка
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Аренда спецтехники для любых задач</h1>
+        <p>Современный парк надежной техники с оператором и без. Быстрая подача на объект.</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Поиск по названию техники..." oninput="filterCatalog()">
+            <button onclick="filterCatalog()"><i class="fa-solid fa-search"></i> Найти</button>
+        </div>
+    </section>
+
+    <!-- Main Catalog -->
+    <div class="container">
+        <h2 class="section-title">Каталог оборудования</h2>
+        
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="setCategory('all', this)">Все категории</button>
+            <button class="filter-btn" onclick="setCategory('excavator', this)">Экскаваторы</button>
+            <button class="filter-btn" onclick="setCategory('crane', this)">Автокраны</button>
+            <button class="filter-btn" onclick="setCategory('loader', this)">Погрузчики</button>
+            <button class="filter-btn" onclick="setCategory('tool', this)">Инструмент</button>
+        </div>
+
+        <!-- Grid -->
+        <div class="catalog-grid" id="catalogGrid">
+            <!-- Динамически заполняется через JS -->
+        </div>
+    </div>
+
+    <!-- Modal Cart / Request -->
+    <div class="modal-overlay" id="cartModal" onclick="handleOverlayClick(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Ваша заявка на аренду</h3>
+                <button class="close-modal" onclick="toggleModal(false)">&times;</button>
+            </div>
+            <div id="cartItemsContainer">
+                <!-- Товары в корзине -->
+            </div>
+            <div id="checkoutSection" style="display: none;">
+                <div class="cart-total" id="cartTotal">Итого: 0 ₽</div>
+                <form class="checkout-form" onsubmit="submitOrder(event)">
+                    <input type="text" id="clientName" placeholder="Ваше имя / Компания" required>
+                    <input type="tel" id="clientPhone" placeholder="Номер телефона" required>
+                    <input type="text" id="clientAddress" placeholder="Адрес объекта доставки" required>
+                    <button type="submit" class="checkout-btn">Отправить заявку</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        const machinery = [
+            {
+                id: 1,
+                name: "Гусеничный экскаватор JCB JS220",
+                category: "excavator",
+                specs: { "Мощность": "172 л.с.", "Ковш": "1.1 м³", "Глубина копания": "6.5 м" },
+                price: 24000,
+                img: "https://images.unsplash.com/photo-1579483072260-237e3d5d592a?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 2,
+                name: "Автокран Ивановец 25 тонн",
+                category: "crane",
+                specs: { "Грузоподъемность": "25 т", "Вылет стрелы": "28 м", "База": "Камаз" },
+                price: 32000,
+                img: "https://images.unsplash.com/photo-1541888946425-d0fbb18f02f2?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 3,
+                name: "Фронтальный погрузчик SDLG 936",
+                category: "loader",
+                specs: { "Грузоподъемность": "3 т", "Ковш": "1.8 м³", "Масса": "10.7 т" },
+                price: 18500,
+                img: "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 4,
+                name: "Мини-экскаватор Bobcat E20",
+                category: "excavator",
+                specs: { "Мощность": "13.9 л.с.", "Масса": "1.9 т", "Ширина": "98 см" },
+                price: 12000,
+                img: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 5,
+                name: "Дизельный генератор Atlas Copco",
+                category: "tool",
+                specs: { "Мощность": "100 кВт", "Расход": "18 л/ч", "Исполнение": "Капотное" },
+                price: 6500,
+                img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 6,
+                name: "Автокран Liebherr LTM 50 т",
+                category: "crane",
+                specs: { "Грузоподъемность": "50 т", "Вылет стрелы": "40 м", "Шасси": "Вездеход" },
+                price: 55000,
+                img: "https://images.unsplash.com/photo-1508873696983-2df5c920ac2c?auto=format&fit=crop&w=600&q=80"
+            }
+        ];
+
+        let currentCategory = 'all';
+        let cart = [];
+
+        function renderCatalog(items) {
+            const grid = document.getElementById('catalogGrid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--gray);">Техника не найдена</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                let specsHtml = '';
+                for (const [key, value] of Object.entries(item.specs)) {
+                    specsHtml += `<li>${key}: <span>${value}</span></li>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div style="position: relative;">
+                        <img src="${item.img}" alt="${item.name}" class="card-img">
+                        <span class="card-tag">${getCategoryName(item.category)}</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${item.name}</h3>
+                        <ul class="card-specs">${specsHtml}</ul>
+                        <div class="card-footer">
+                            <div class="price">
+                                ${item.price.toLocaleString()} ₽
+                                <small>за 1 смену (8ч)</small>
+                            </div>
+                            <button class="rent-btn" onclick="addToCart(${item.id})">В смету</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function getCategoryName(cat) {
+            const names = { excavator: 'Экскаватор', crane: 'Автокран', loader: 'Погрузчик', tool: 'Инструмент' };
+            return names[cat] || cat;
+        }
+
+        function setCategory(category, btn) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterCatalog();
+        }
+
+        function filterCatalog() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = machinery.filter(item => {
+                const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
+                const matchesQuery = item.name.toLowerCase().includes(query);
+                return matchesCategory && matchesQuery;
+            });
+            renderCatalog(filtered);
+        }
+
+        function addToCart(id) {
+            const item = machinery.find(m => m.id === id);
+            const existing = cart.find(c => c.id === id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+            updateCartUI();
+            
+            // Анимация кнопки или уведомление
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = 'Добавлено ✓';
+            btn.style.background = 'var(--success)';
+            btn.style.color = 'white';
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = 'var(--primary)';
+                btn.style.color = '#333';
+            }, 1000);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(c => c.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            const container = document.getElementById('cartItemsContainer');
+            const checkoutSec = document.getElementById('checkoutSection');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="empty-cart">Список техники пуст</div>`;
+                checkoutSec.style.display = 'none';
+                return;
+            }
+
+            checkoutSec.style.display = 'block';
+            container.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.price.toLocaleString()} ₽ × ${item.quantity} смен(ы)</p>
+                    </div>
+                    <div class="cart-item-controls">
+                        <strong>${itemTotal.toLocaleString()} ₽</strong>
+                        <button class="remove-btn" onclick="removeFromCart(${item.id})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('cartTotal').innerText = `Итого: ${total.toLocaleString()} ₽`;
+        }
+
+        function toggleModal(open) {
+            const modal = document.getElementById('cartModal');
+            if (open) {
+                modal.classList.add('open');
+            } else {
+                modal.classList.remove('open');
+            }
+        }
+
+        function handleOverlayClick(event) {
+            if (event.target === event.currentTarget) {
+                toggleModal(false);
+            }
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const address = document.getElementById('clientAddress').value;
+
+            alert(`Спасибо, ${name}! Ваша заявка успешно оформлена.\nМенеджер свяжется с вами по номеру ${phone} для подтверждения доставки на объект: ${address}.`);
+            
+            cart = [];
+            updateCartUI();
+            toggleModal(false);
+            event.target.reset();
+        }
+
+        // Инициализация при загрузке
+        renderCatalog(machinery);
+    </script>
+</body>
+</html>
